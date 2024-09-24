@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import edu.es.eoi.marketplace.dto.UsuarioDto;
 import edu.es.eoi.marketplace.service.UsuarioService;
+import edu.es.eoi.marketplace.service.UsuarioServiceImpl;
 
 
 @RestController
@@ -22,27 +23,27 @@ import edu.es.eoi.marketplace.service.UsuarioService;
 public class UsuarioController {
 	
 	@Autowired
-	UsuarioService usuarioService;
+	UsuarioServiceImpl usuarioServiceImpl;
 	
 	@GetMapping("/usuarios")
 	public ResponseEntity<List<UsuarioDto>> findAll(){
-		return new ResponseEntity<List<UsuarioDto>>(usuarioService.findAll(), HttpStatus.OK);
+		return new ResponseEntity<List<UsuarioDto>>(usuarioServiceImpl.findAll(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/usuarios/{id}")
 	public ResponseEntity<UsuarioDto> findById(@PathVariable Integer id){
-		return new ResponseEntity<UsuarioDto>(usuarioService.findById(id), HttpStatus.OK);
+		return new ResponseEntity<UsuarioDto>(usuarioServiceImpl.findById(id), HttpStatus.OK);
 	}
 	
 	@PostMapping("/usuarios")
 	public ResponseEntity<String> create(@RequestBody UsuarioDto usuarioDto) { 
-		usuarioService.create(usuarioDto);
+		usuarioServiceImpl.create(usuarioDto);
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 	
 	@PostMapping("/usuarios/login")
 	public ResponseEntity<UsuarioDto> login(@RequestBody UsuarioDto usuarioDto) { 
-		UsuarioDto dto = usuarioService.login(usuarioDto);
+		UsuarioDto dto = usuarioServiceImpl.login(usuarioDto);
 		if (dto != null) {
 			return new ResponseEntity<UsuarioDto>(dto, HttpStatus.OK);			
 		}
@@ -52,7 +53,7 @@ public class UsuarioController {
 	@PutMapping("/usuarios/{id}")
 	public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody UsuarioDto usuarioDto){
 		if(id.equals(usuarioDto.getId())){
-			usuarioService.update(usuarioDto);
+			usuarioServiceImpl.update(usuarioDto);
 			return new ResponseEntity<String>(HttpStatus.OK);						
 		}
 		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);	
